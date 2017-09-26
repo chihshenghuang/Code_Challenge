@@ -16,6 +16,13 @@ app.get('/', function (req, res) {
   res.send('Hello World!')
 })
 
+app.post('/api/login', function (req, res) {
+	console.log(req.body.username);
+	console.log(req.body.password);
+	const valid = true;
+	res.json({valid})
+})
+
 app.listen(8080, function () {
   console.log('Example app listening on port 8080!')
 })
