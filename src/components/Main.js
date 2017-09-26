@@ -12,8 +12,6 @@ const LoginRoute = ({auth}) => {
 	}
 }
 
-
-
 const Main = ({auth}) => {
 	return (
 		<div>

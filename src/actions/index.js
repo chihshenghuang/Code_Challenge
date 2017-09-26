@@ -9,3 +9,9 @@ export const logOut = () => {
 		type: 'LOG_OUT'
 	}
 }
+
+export const post = () => {
+	return {
+		type: 'POST'
+	}	
+}

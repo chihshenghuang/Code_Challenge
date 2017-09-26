@@ -41,7 +41,6 @@ class Login extends Component {
 	}
 
 	render() {
-		console.log('login render')
 		return (
 			<div>
 				<label>Name</label>
