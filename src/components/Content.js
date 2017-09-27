@@ -18,22 +18,22 @@ class Content extends Component {
 			submitPost: false,
 			postedArticles: [] 
 		}
-		this.submit = this.submit.bind(this)
+		this.logout = this.logout.bind(this)
 		this.postArticle = this.postArticle.bind(this)
 		this.submitPost = this.submitPost.bind(this)
 		this.cancelPost = this.cancelPost.bind(this)
 		this.textareaChange= this.textareaChange.bind(this)
 	}
 
-	submit(evt) {
+	logout() {
 		this.props.logout()
 	}
 
-	cancelPost(evt) {
+	cancelPost() {
 		this.setState({postState: false})
 	}
 
-	submitPost(evt) {
+	submitPost() {
 		this.setState({postState: false})
 		this.setState({postedArticles: this.state.postedArticles.concat(article(this.state.topic))})
 	}
@@ -42,7 +42,7 @@ class Content extends Component {
 		this.setState({topic: evt.target.value})
 	}
 
-	postArticle(evt) {
+	postArticle() {
 		this.setState({postState: true})
 	}
 
@@ -58,20 +58,12 @@ class Content extends Component {
 				)
 			}
 		}
-/*
-		const article = () => {
-			if (this.state.submitPost) {
-					<Article topic={this.state.topic}/>
-			}
-		}
-*/		
-		console.log(this.state.postedArticles)
 		return (
 			<div>
-				<button onClick={this.submit}>Log Out</button>
+				<button onClick={this.logout}>Log Out</button>
 				<button onClick={this.postArticle}>Post Article</button>
-			    {(this.state.postedArticles).map((item, index) => <div key={index}>{item}</div>)}
 				{postTextarea()}	
+			    {(this.state.postedArticles).map((item, index) => <div key={index}>{item}</div>)}
 			</div>
 		)	
 	}
@@ -80,7 +72,6 @@ class Content extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
 	logout: () => dispatch(logOut()),
-	post: () => dispatch(post())
 })
 
 
