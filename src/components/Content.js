@@ -5,13 +5,18 @@ import Article from './Article'
 
 const TEXTAREA_MAXLENGTH = 255
 
+const article = (topic) => {
+	return <Article topic={topic}/>
+}
+
 class Content extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			postState: false,
 			topic: '',
-			submitPost: false
+			submitPost: false,
+			postedArticles: [] 
 		}
 		this.submit = this.submit.bind(this)
 		this.postArticle = this.postArticle.bind(this)
@@ -30,12 +35,13 @@ class Content extends Component {
 
 	submitPost(evt) {
 		this.setState({postState: false})
-		this.setState({submitPost: true})
+		this.setState({postedArticles: this.state.postedArticles.concat(article(this.state.topic))})
 	}
 
 	textareaChange(evt) {
 		this.setState({topic: evt.target.value})
 	}
+
 	postArticle(evt) {
 		this.setState({postState: true})
 	}
@@ -52,18 +58,19 @@ class Content extends Component {
 				)
 			}
 		}
-
+/*
 		const article = () => {
 			if (this.state.submitPost) {
-				return <Article topic={this.state.topic}/>
+					<Article topic={this.state.topic}/>
 			}
 		}
-		
+*/		
+		console.log(this.state.postedArticles)
 		return (
 			<div>
 				<button onClick={this.submit}>Log Out</button>
 				<button onClick={this.postArticle}>Post Article</button>
-			    {article()}
+			    {(this.state.postedArticles).map((item, index) => <div key={index}>{item}</div>)}
 				{postTextarea()}	
 			</div>
 		)	
