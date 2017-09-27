@@ -7,7 +7,7 @@ class Article extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			value: 0
+			value: 0 + this.props.votes
 		}
 		this.increment = this.increment.bind(this)
 		this.decrement = this.decrement.bind(this)
