@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
-import {logOut, post} from '../actions'
+import {logOut} from '../actions'
 import {connect} from 'react-redux'
 import Article from './Article'
 
 const TEXTAREA_MAXLENGTH = 255
 
-const article = (topic) => {
-	return <Article topic={topic}/>
+const article = (topic, articleCount) => {
+	return <Article topic={topic} index={articleCount}/>
 }
 
 class Content extends Component {
@@ -18,6 +18,7 @@ class Content extends Component {
 			submitPost: false,
 			postedArticles: [] 
 		}
+		const {articleCount} = this.props
 		this.logout = this.logout.bind(this)
 		this.postArticle = this.postArticle.bind(this)
 		this.submitPost = this.submitPost.bind(this)
@@ -35,7 +36,7 @@ class Content extends Component {
 
 	submitPost() {
 		this.setState({postState: false})
-		this.setState({postedArticles: this.state.postedArticles.concat(article(this.state.topic))})
+		this.setState({postedArticles: this.state.postedArticles.concat(article(this.state.topic, (this.state.postedArticles.length)+1))})
 	}
 
 	textareaChange(evt) {
@@ -47,6 +48,7 @@ class Content extends Component {
 	}
 
 	render() {
+		console.log('articles', this.props.articles)
 		const postTextarea = () => {
 			if (this.state.postState) {
 				return (
@@ -70,11 +72,15 @@ class Content extends Component {
 }
 
 
+const mapStateToProps = (state) => ({
+	articles: state.counter
+})
+
 const mapDispatchToProps = (dispatch) => ({
 	logout: () => dispatch(logOut()),
 })
 
 
-export default connect(null, mapDispatchToProps)(Content)
+export default connect(mapStateToProps, mapDispatchToProps)(Content)
 
 

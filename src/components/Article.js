@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {store} from 'redux'
-import {onIncrement, onDecrement} from '../actions'
 import {connect} from 'react-redux'
+import {updateVote} from '../actions'
+
 
 class Article extends Component {
 	constructor(props) {
@@ -14,11 +14,11 @@ class Article extends Component {
 	}
 	
 	increment() {
-		this.setState({value:this.state.value+1})
+		this.setState({value:this.state.value+1}, this.props.updateVote(this.props.index, this.state.value+1))
 	}
 	
 	decrement() {
-		this.setState({value:this.state.value-1})
+		this.setState({value:this.state.value-1}, this.props.updateVote(this.props.index, this.state.value-1))
 	}
 	render() {
 		return (
@@ -32,16 +32,13 @@ class Article extends Component {
 	}
 }
 
-/*
 const mapStateToProps = (state) => ({
-	value: state.counter	
 })
 
-const mapDispatchToProps = (dispatch) => ({
-	onIncrement: ()	=> dispatch(onIncrement()),
-	onDecrement: ()	=> dispatch(onDecrement())
-})
-*/
+const mapDispatchToProps = (dispatch) => ({	
+	updateVote(index, votes) { 
+		dispatch(updateVote(index, votes))
+	}
+})	
 
-//export default connect(mapStateToProps, mapDispatchToProps)(Article)
-export default Article
+export default connect(mapStateToProps, mapDispatchToProps)(Article)

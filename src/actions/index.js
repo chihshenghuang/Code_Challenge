@@ -10,20 +10,11 @@ export const logOut = () => {
 	}
 }
 
-export const post = () => {
+export const updateVote = (index, data) => {
 	return {
-		type: 'POST'
-	}	
-}
-
-export const onIncrement = () => {
-	return {
-		type: 'INCREMENT'
+		type: 'UPDATE_VOTE',
+		index: index,
+		votes: data
 	}
 }
 
-export const onDecrement= () => {
-	return {
-		type: 'DECREMENT'
-	}
-}

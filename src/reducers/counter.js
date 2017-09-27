@@ -1,10 +1,15 @@
-export default (state = 0, action) => {
+const initialState = {
+	array:[0]
+}
+
+export default (state=initialState, action) => {
 	switch(action.type) {
-		case 'INCREMENT': 
-			return state + 1
-		case 'DECREMENT':
-			return state - 1
+		case 'UPDATE_VOTE': 
+			console.log(state);
+			state.array[action.index] = action.votes
+			break;
 		default:
 			return state
 	}	
+	return state
 }
