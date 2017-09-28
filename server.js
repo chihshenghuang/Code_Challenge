@@ -4,30 +4,32 @@ const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
 const app = express()
 
+
+const content = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Integer pretium dui sit amet felis. Integer sit amet diam. Phasellus ultrices viverra velit. Nam mattis, arcu ut bibendum commodo, magna nisi tincidunt tortor, quis accumsan augue ipsum id lorem.Lo'
 var topics = [
 	{
 		id: 1,
-		content: 'topic1',
+		content: content,
 		votes: 1
 	},
 	{
 		id: 2,
-		content: 'topic2',
+		content: content,
 		votes: 2
 	},
 	{
 		id: 3,
-		content: 'topic3',
+		content: content,
 		votes: 3
 	},
 	{
 		id: 4,
-		content: 'topics4',
+		content: content,
 		votes: 4
 	},
 	{
 		id: 5,
-		content: 'topics5',
+		content: content,
 		votes: 5
 	}
 ]

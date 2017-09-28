@@ -64,6 +64,8 @@ class Login extends Component {
 			let response = res.data.response
 			let token = res.data.token
 			console.log('response', response)
+			
+				this.props.login()
 			if(response === 'SUCCESS') {
 				console.log('login')
 				document.cookie = `token=${token}`
@@ -90,7 +92,7 @@ class Login extends Component {
 				<label className='label label-login'>User Name</label>
 				<input type='text' placeholder='User Name' className='form form-login' onChange={this.userFieldChange}/> 
 				<label className='label label-login'>Password</label>
-				<input type='text' placeholder='Password' className='form form-login' onChange={this.passwordFieldChange}/> 
+				<input type='password' placeholder='Password' className='form form-login' onChange={this.passwordFieldChange}/> 
 				<div>
 					<label className='label label-status'>{this.props.loginState}</label>
 				</div>

@@ -61,7 +61,7 @@ class Content extends Component {
 	submitPost() {
 		this.setState({postState: false})
 		const {dispatch} = this.props
-		axios.post('http://localhost:8080/api/topics', {
+		axios.post('/api/topics', {
 			topic: this.state.topic,
 			articleVotesArray: this.props.articles
 		})
@@ -107,9 +107,9 @@ class Content extends Component {
 			}
 		}
 		return (
-			<div>
-				<button onClick={this.logout}>Log Out</button>
-				<button onClick={this.postArticle}>Post Article</button>
+			<div className='container'>
+				<button className='btn btn-login' onClick={this.logout}>Log Out</button>
+				<button className='btn btn-login' onClick={this.postArticle}>Post Article</button>
 				{postTextarea()}	
 				{getTopics()}	
 			</div>

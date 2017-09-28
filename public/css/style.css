@@ -31,6 +31,28 @@ body {
     padding-bottom: 24px;
 }
 
+.container-article {
+	display: flex;
+	justify-content: flex-start;
+	margin: 30px 200px;
+	padding: 10px;
+	width: 800px;
+	border: 1px solid white;
+	border-radius: 15px;
+}
+
+.container-vote {
+	display: inline-block;
+	width: 70px;
+}
+
+.container-topic {
+	display: inline-block;
+	margin-left: 40px;
+	display: flex;
+	align-items: center;
+}
+
 .form {
     width: 100%;
     padding: 12px 10px;
@@ -51,6 +73,19 @@ body {
     color: black;
 }
 
+.label-votes {
+	color: white;
+	margin-left: 14px;
+	font-size: 40px;
+}
+
+.label-article {
+	color: white;
+	font-size: 20px;
+	margin-left: 0;
+}
+
+
 .form-login {
     box-sizing: border-box;
     min-height: 40px;
@@ -63,14 +98,14 @@ body {
 }
 
 .btn {
-    width: 220px;
-    margin: 20px 15px;
     display: inline-block;
     cursor: pointer;
 }
 
 .btn-login {
-    color: white;
+    width: 220px;
+    margin: 20px 15px;
+	color: white;
     font-weight: 600;
 	height: 56px;
     background-image: linear-gradient(-180deg, #33D058, #28a745 90%);
@@ -87,3 +122,16 @@ body {
     background-position: 0 -0.05em;
     border-color: rgba(27, 31, 35, 0.5);
 }
+
+.btn-vote {
+	margin: 10px;
+	width: 30px;
+	height: 30px;
+	display: block;
+	font-size: 20px;
+	border-radius: 5px;
+	color: white;
+
+}
+
+ 

@@ -30,11 +30,15 @@ class Article extends Component {
 	}
 	render() {
 		return (
-			<div>
-				<p>{this.props.topic}</p>
-				<h1>{this.state.value}</h1>
-				<button onClick={this.increment}>+</button>
-				<button onClick={this.decrement}>-</button>
+			<div className='container-article'>
+				<div className='container-vote'>
+					<button className='btn btn-vote' onClick={this.increment}>+</button>
+					<span className='label-votes'>{this.state.value}</span>
+					<button className='btn btn-vote' onClick={this.decrement}>-</button>
+				</div>
+				<div className='container-topic'>
+					<p className='label-article'>{this.props.topic}</p>
+				</div>
 			</div>
 		)
 	}
