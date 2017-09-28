@@ -86,16 +86,16 @@ class Login extends Component {
 	render() {
 		console.log(this.props)
 		return (
-			<div>
-				<label>Name</label>
-				<input type='text' placeholder='User Name' onChange={this.userFieldChange}/> 
-				<label>Password</label>
-				<input type='text' placeholder='Password' onChange={this.passwordFieldChange}/> 
-				<button onClick={this.login}>Login</button> 
-				<button onClick={this.signup}>signup</button> 
+			<div className='container-login'>
+				<label className='label label-login'>User Name</label>
+				<input type='text' placeholder='User Name' className='form form-login' onChange={this.userFieldChange}/> 
+				<label className='label label-login'>Password</label>
+				<input type='text' placeholder='Password' className='form form-login' onChange={this.passwordFieldChange}/> 
 				<div>
-					<span>{this.props.loginState}</span>
+					<label className='label label-status'>{this.props.loginState}</label>
 				</div>
+				<button className='btn btn-login' onClick={this.login}>Log In</button> 
+				<button className='btn btn-login' onClick={this.signup}>Sign Up</button> 
 			</div>
 		)
 	}
