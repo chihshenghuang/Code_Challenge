@@ -3,6 +3,7 @@ import {logOut, fetchTopics, updateVote} from '../actions'
 import {connect} from 'react-redux'
 import Article from './Article'
 import axios from 'axios'
+import ReactModal from 'react-modal'
 
 const TEXTAREA_MAXLENGTH = 255
 
@@ -14,10 +15,11 @@ class Content extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			showModal: false,
 			postState: false,
 			topic: '',
 			submitPost: false,
-			postedArticles: [] 
+			postedArticles: []
 		}
 		this.logout = this.logout.bind(this)
 		this.postArticle = this.postArticle.bind(this)
@@ -55,7 +57,7 @@ class Content extends Component {
 	}
 
 	cancelPost() {
-		this.setState({postState: false})
+		this.setState({postState: false, showModal: false})
 	}
 
 	submitPost() {
@@ -79,7 +81,7 @@ class Content extends Component {
 	}
 
 	postArticle() {
-		this.setState({postState: true})
+		this.setState({postState: true, showModal: true})
 	}
 
 	render() {
@@ -99,9 +101,16 @@ class Content extends Component {
 			if (this.state.postState) {
 				return (
 					<div>
-						<button onClick={this.submitPost}>Post</button>
-						<button onClick={this.cancelPost}>Cancel</button>
-						<textarea onChange={this.textareaChange} maxLength={TEXTAREA_MAXLENGTH}></textarea>
+						<ReactModal
+							isOpen={this.state.showModal}
+							contentLabel="Post Article"
+						>
+							<div className='container-textarea'>
+								<textarea className='textarea' onChange={this.textareaChange} maxLength={TEXTAREA_MAXLENGTH}></textarea>
+								<button className='btn btn-cancel' onClick={this.cancelPost}>Cancel</button>
+								<button className='btn btn-post' onClick={this.submitPost}>Post</button>
+							</div>
+						</ReactModal>
 					</div>
 				)
 			}
