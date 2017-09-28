@@ -30,8 +30,6 @@ var topics = [
 	}
 ]
 
-
-
 var allowCrossDomain = function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTION')
@@ -93,10 +91,62 @@ app.post('/api/topics', function(req, res) {
 	res.json(topics)
 })
 
+function userDict1() {
+	let users = {}
+	this.set = (key, value) => {
+		users[key] = value
+	}
+	this.has = (key) => {
+		return key in users
+	}
+	this.get = (key) => {
+		return this.has(key) ? users[key] : undefined
+	}  
+	this.getAll = () => {
+		return users
+	}
+}
 
-app.post('/api/login', function (req, res) {
-	const valid = true;
-	res.json({valid})
+const userDict = new userDict1()
+
+app.post('/api/signup', function(req, res) {
+	let user = req.body.username
+	let password = req.body.password
+	let response
+/*
+	if (user.indexOf(' ') || password.indexOf(' ')) {
+		response = 'WRONGFORMAT'
+		res.json({response})
+	}
+*/
+	if (userDict.has(user)) {
+		response = 'USER_EXIST'
+	}
+	else {
+		userDict.set(user, password)
+		response = 'CREATE_USER'
+	}
+	console.log(userDict.getAll())
+	res.json({response})
+})
+
+app.post('/api/login', function(req, res) {
+	let user = req.body.username
+	let pwd = req.body.password
+	let response
+
+	if(userDict.has(user)) {
+		if(userDict.get(user) === pwd) {
+			response = 'SUCCESS'
+		}
+		else {
+			response = 'WRONGPASSWORD'
+		}
+	}
+	else {
+		response = 'NO_USER'
+	}
+	res.json({response})	
 })
 
 app.listen(8080, function () {

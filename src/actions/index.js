@@ -10,6 +10,13 @@ export const logOut = () => {
 	}
 }
 
+export const loginStatus = (data) => {
+	console.log('status,,', data)
+	return {
+		type: data
+	}	
+}
+
 export const updateVote = (index, data) => {
 	return {
 		type: 'UPDATE_VOTE',

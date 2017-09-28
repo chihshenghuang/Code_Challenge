@@ -86,9 +86,6 @@ class Content extends Component {
 		const getTopics = () => {
 			var topicsArr = [];
 			for (let i = 0; i < this.state.postedArticles.length; i++) {
-				console.log(
-					'votes', this.state.postedArticles[i].votes 
-				)
 				topicsArr.push(article(this.state.postedArticles[i].id, 
 									   this.state.postedArticles[i].content, 
 									   this.state.postedArticles[i].votes))
@@ -119,7 +116,6 @@ class Content extends Component {
 		)	
 	}
 }
-
 
 const mapStateToProps = (state) => ({
 	articles: state.counter,
