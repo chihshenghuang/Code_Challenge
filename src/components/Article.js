@@ -13,6 +13,14 @@ class Article extends Component {
 		this.decrement = this.decrement.bind(this)
 	}
 	
+	componentDidMount () {
+		this.props.updateVote(this.props.index, this.state.value)
+	}
+
+	componentWillReceiveProps(nextProps) {
+		this.setState({value: nextProps.votes})	
+	}
+
 	increment() {
 		this.setState({value:this.state.value+1}, this.props.updateVote(this.props.index, this.state.value+1))
 	}

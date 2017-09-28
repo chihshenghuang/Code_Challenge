@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {logOut, fetchTopics} from '../actions'
+import {logOut, fetchTopics, updateVote} from '../actions'
 import {connect} from 'react-redux'
 import Article from './Article'
 import axios from 'axios'
@@ -19,7 +19,6 @@ class Content extends Component {
 			submitPost: false,
 			postedArticles: [] 
 		}
-		const {articleCount} = this.props
 		this.logout = this.logout.bind(this)
 		this.postArticle = this.postArticle.bind(this)
 		this.submitPost = this.submitPost.bind(this)
@@ -41,11 +40,18 @@ class Content extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		const {topics} = nextProps
-		this.setState({postedArticles: topics})	
+		this.setState({postedArticles: topics}, this.props.updateVote(0, 0))	
 	}
 
 	logout() {
-		this.props.logout()
+		axios.put('http://localhost:8080/api/topics', {
+			topic: this.state.topic,
+			articleVotesArray: this.props.articles
+		}).then((response) => {
+			this.props.logout()	
+		}).catch((error) => {
+			console.log(error)	
+		})
 	}
 
 	cancelPost() {
@@ -56,7 +62,8 @@ class Content extends Component {
 		this.setState({postState: false})
 		const {dispatch} = this.props
 		axios.post('http://localhost:8080/api/topics', {
-			topic: this.state.topic
+			topic: this.state.topic,
+			articleVotesArray: this.props.articles
 		})
 		.then((response) => {
 			dispatch(fetchTopics(response.data))
@@ -65,8 +72,6 @@ class Content extends Component {
 			console.log(error)
 			dispatch(fetchTopics([]))
 		})
-
-		//this.setState({postedArticles: this.state.postedArticles.concat(article(this.state.topic, (this.state.postedArticles.length)+1))})
 	}
 
 	textareaChange(evt) {
@@ -78,11 +83,12 @@ class Content extends Component {
 	}
 
 	render() {
-		console.log('articles', this.props.topics)
 		const getTopics = () => {
 			var topicsArr = [];
-			console.log('state.article', this.state.postedArticles)
 			for (let i = 0; i < this.state.postedArticles.length; i++) {
+				console.log(
+					'votes', this.state.postedArticles[i].votes 
+				)
 				topicsArr.push(article(this.state.postedArticles[i].id, 
 									   this.state.postedArticles[i].content, 
 									   this.state.postedArticles[i].votes))
@@ -121,7 +127,12 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-	logout: () => dispatch(logOut()),
+	logout() {
+		dispatch(logOut())
+	},
+	updateVote(index, votes) {
+		dispatch(updateVote(index, votes))
+	},
 	dispatch
 })
 

@@ -46,15 +46,48 @@ app.get('/', function (req, res) {
   res.send('Hello World!')
 })
 
-app.get('/api/topics', function (req, res) {
+app.get('/api/topics', function(req, res) {
+	topics.sort((a, b) => {
+		return b.votes - a.votes	
+	})
+	console.log(topics)
 	res.json(topics)
 })
 
-app.post('/api/topics', function (req, res) {
+app.put('/api/topics', function(req, res) {
+	var articleVotesAry = req.body.articleVotesArray.array
+	topics.sort((a, b) => {
+		return a.id - b.id
+	})
+	articleVotesAry.shift()
+	for(let i=1; i < topics.length; i++ ) {
+		topics[i].votes = articleVotesAry[i]	
+	}
+	topics.sort((a, b) => {
+		return b.votes - a.votes	
+	})
+	console.log(topics)
+	res.json(topics)
+})
+
+
+app.post('/api/topics', function(req, res) {
+	var articleVotesAry = req.body.articleVotesArray.array
+	topics.sort((a, b) => {
+		return a.id - b.id
+	})
+	articleVotesAry.shift()
+	for(let i=1; i < topics.length; i++ ) {
+		topics[i].votes = articleVotesAry[i]	
+	}
 	topics.push({
 		id: topics.length+1,
 		content: req.body.topic,
 		votes: 0
+	})
+	console.log(req.body.articleVotesArray)
+	topics.sort((a, b) => {
+		return b.votes - a.votes	
 	})
 	console.log(topics)
 	res.json(topics)
