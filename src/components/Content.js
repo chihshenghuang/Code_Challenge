@@ -28,7 +28,7 @@ class Content extends Component {
 
 	componentDidMount() {
 		const {dispatch} = this.props
-		axios.get('http://localhost:8080/api/topics')
+		axios.get('/api/topics')
 		.then((response) => {
 			dispatch(fetchTopics(response.data))
 		})
@@ -44,7 +44,7 @@ class Content extends Component {
 	}
 
 	logout() {
-		axios.put('http://localhost:8080/api/topics', {
+		axios.put('/api/topics', {
 			topic: this.state.topic,
 			articleVotesArray: this.props.articles
 		}).then((response) => {

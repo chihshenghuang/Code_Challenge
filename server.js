@@ -1,5 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const jwt = require('jsonwebtoken')
 const app = express()
 
 var topics = [
@@ -31,20 +33,38 @@ var topics = [
 ]
 
 var allowCrossDomain = function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTION')
-  res.header('Access-Control-Allow-Headers', 'Content-Type')
+  //res.header('Access-Control-Allow-Origin', '*')
+  //res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTION')
+  //res.header('Access-Control-Allow-Headers', 'Content-Type')
   next();
 }
 
-app.use(allowCrossDomain);
-app.use(bodyParser.json());
+//app.use(allowCrossDomain)
+app.use(bodyParser.json())
+app.use(cookieParser())
+
+	
+const verify = (token, user) => {
+	jwt.verify(token, 'RS256', function(err, decoded) {
+		if(err)	{
+			console.log('no auth')
+			return res.status(403).send({
+				response: 'NO_AUTHENTICATION'	
+			})	
+		}	  
+		else {
+			console.log('sucess')
+			//req.decoded = decoded
+		}
+	})
+}
 
 app.get('/', function (req, res) {
   res.send('Hello World!')
 })
 
 app.get('/api/topics', function(req, res) {
+	//verify(req.cookies.token, req.body.username)
 	topics.sort((a, b) => {
 		return b.votes - a.votes	
 	})
@@ -53,6 +73,7 @@ app.get('/api/topics', function(req, res) {
 })
 
 app.put('/api/topics', function(req, res) {
+	//verify(req.cookies.token, req.body.username)
 	var articleVotesAry = req.body.articleVotesArray.array
 	topics.sort((a, b) => {
 		return a.id - b.id
@@ -70,6 +91,7 @@ app.put('/api/topics', function(req, res) {
 
 
 app.post('/api/topics', function(req, res) {
+	//verify(req.cookies.token, req.body.username)
 	var articleVotesAry = req.body.articleVotesArray.array
 	topics.sort((a, b) => {
 		return a.id - b.id
@@ -91,7 +113,7 @@ app.post('/api/topics', function(req, res) {
 	res.json(topics)
 })
 
-function userDict1() {
+function userDictionary() {
 	let users = {}
 	this.set = (key, value) => {
 		users[key] = value
@@ -107,7 +129,7 @@ function userDict1() {
 	}
 }
 
-const userDict = new userDict1()
+const userDict = new userDictionary()
 
 app.post('/api/signup', function(req, res) {
 	let user = req.body.username
@@ -137,7 +159,10 @@ app.post('/api/login', function(req, res) {
 
 	if(userDict.has(user)) {
 		if(userDict.get(user) === pwd) {
+			let token = jwt.sign({user: user}, 'RS256')
 			response = 'SUCCESS'
+			res.json({response, token})
+			return 
 		}
 		else {
 			response = 'WRONGPASSWORD'

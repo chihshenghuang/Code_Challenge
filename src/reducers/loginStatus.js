@@ -5,7 +5,7 @@ export default (state='', action) => {
 		case 'USER_EXIST':
 			return 'The user exist!!'
 		case 'CREATE_USER':
-			return ''
+			return 'Create successfully, please log in!!'
 		case 'SUCCESS':
 			return ''
 		case 'WRONGPASSWORD':

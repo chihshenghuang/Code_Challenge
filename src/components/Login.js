@@ -30,16 +30,16 @@ class Login extends Component {
 	}
 
 	signup(evt) {
-		axios.post('http://localhost:8080/api/signup', {
+		axios.post('/api/signup', {
 			username: this.state.username,
-			password: this.state.password
-		})	
+			password: this.state.password,
+		})
 		.then((res) => {
 			let response = res.data.response
 			console.log('response', response)
 			if(response === 'CREATE_USER') {
 				console.log('create user')
-				this.props.login()
+				this.props.loginStatus(response)
 			}
 			else if(response === 'USER_EXIST') {
 				console.log('user exist')
@@ -56,15 +56,17 @@ class Login extends Component {
 	}
 
 	login(evt) {
-		axios.post('http://localhost:8080/api/login', {
+		axios.post('/api/login', {
 			username: this.state.username,
 			password: this.state.password
 		})	
 		.then((res) => {
 			let response = res.data.response
+			let token = res.data.token
 			console.log('response', response)
 			if(response === 'SUCCESS') {
 				console.log('login')
+				document.cookie = `token=${token}`
 				this.props.login()
 			}
 			else if(response === 'NO_USER') {
