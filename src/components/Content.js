@@ -119,6 +119,7 @@ class Content extends Component {
 			<div className='container'>
 				<button className='btn btn-login' onClick={this.logout}>Log Out</button>
 				<button className='btn btn-login' onClick={this.postArticle}>Post Article</button>
+				<div className='label-user'>Hi, {this.props.user}</div>
 				{postTextarea()}	
 				{getTopics()}	
 			</div>
@@ -128,7 +129,8 @@ class Content extends Component {
 
 const mapStateToProps = (state) => ({
 	articles: state.counter,
-	topics: state.getTopics
+	topics: state.getTopics,
+	user: state.user
 })
 
 const mapDispatchToProps = (dispatch) => ({

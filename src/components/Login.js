@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
-import {logIn, loginStatus} from '../actions'
+import {logIn, loginStatus, setUser} from '../actions'
 
 
 class Login extends Component {
@@ -64,11 +64,13 @@ class Login extends Component {
 			let response = res.data.response
 			let token = res.data.token
 			console.log('response', response)
-			
-				this.props.login()
+			this.props.setUser(this.state.username)
+			this.props.login()
+				
 			if(response === 'SUCCESS') {
 				console.log('login')
 				document.cookie = `token=${token}`
+				this.props.setUser(this.state.username)
 				this.props.login()
 			}
 			else if(response === 'NO_USER') {
@@ -109,7 +111,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	login: () => dispatch(logIn()),
-	loginStatus: (data) => dispatch(loginStatus(data))
+	loginStatus: (data) => dispatch(loginStatus(data)),
+	setUser: (data) => dispatch(setUser(data))
 })
 
 
