@@ -4,6 +4,3 @@ deploy:
 	provider: heroku
 	api_key: 3fb29ca5-822d-4574-8df8-8cc3986a15f0
 	app: Code_Challenge
-	run: 
-		- "yarn build"
-		- "node server.js"
