@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
+const path = require('path')
 const app = express()
 
 
@@ -44,6 +45,7 @@ var allowCrossDomain = function(req, res, next) {
 //app.use(allowCrossDomain)
 app.use(bodyParser.json())
 app.use(cookieParser())
+app.use(express.static(path.join(__dirname, 'build')))
 
 	
 const verify = (token, user) => {

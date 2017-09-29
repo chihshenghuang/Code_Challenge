@@ -1,0 +1,10 @@
+language: node_js
+
+deploy:
+	provider: heroku
+	api_key:
+		secure: 3fb29ca5-822d-4574-8df8-8cc3986a15f0
+		app: Code_Challenge
+		run: 
+			- "yarn build"
+			- "node server.js"
