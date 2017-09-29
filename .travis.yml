@@ -2,12 +2,11 @@ language: node_js
 node_js:
 	- "iojs"
 	- "7"
-before_script:
-	- yarn build
-script: 
-	- node server.js
 
 deploy:
 	provider: heroku
 	api_key: 8df735a3-ed7b-4203-9a07-9a172befcb26
 	app: Code_Challenge
+
+script: 
+	- node server.js
