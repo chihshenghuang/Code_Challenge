@@ -9,5 +9,5 @@ script:
 
 deploy:
 	provider: heroku
-	api_key: 3fb29ca5-822d-4574-8df8-8cc3986a15f0
+	api_key: 8df735a3-ed7b-4203-9a07-9a172befcb26
 	app: Code_Challenge
