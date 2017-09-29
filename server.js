@@ -35,18 +35,9 @@ var topics = [
 	}
 ]
 
-var allowCrossDomain = function(req, res, next) {
-  //res.header('Access-Control-Allow-Origin', '*')
-  //res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTION')
-  //res.header('Access-Control-Allow-Headers', 'Content-Type')
-  next();
-}
-
-//app.use(allowCrossDomain)
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'build')))
-
 	
 const verify = (token, user) => {
 	jwt.verify(token, 'RS256', function(err, decoded) {
@@ -92,7 +83,6 @@ app.put('/api/topics', function(req, res) {
 	console.log(topics)
 	res.json(topics)
 })
-
 
 app.post('/api/topics', function(req, res) {
 	//verify(req.cookies.token, req.body.username)
