@@ -17,10 +17,10 @@ body {
     height: 100%; 
 }
 
-
 .container {
 	padding: 20px;	
 }
+
 .container-login {
     background: #fafbfc;
     vertical-align: middle;
@@ -87,7 +87,9 @@ body {
 }
 
 .label-status {
-	color: red;	
+	margin: auto;
+	width: 80%;
+	margin-top: 30px;
 }
 
 .label-login {
@@ -128,6 +130,17 @@ body {
 .btn {
     display: inline-block;
     cursor: pointer;
+}
+
+.btn-login-cancel {
+    float: right;
+	border-radius: 5px;
+    background-color: #3498DB;
+	width: 80px;
+	height: 30px;
+	color: white;
+	font-size: 12px;
+    border-color: rgba(27, 31, 35, 0.1);
 }
 
 .btn-post {

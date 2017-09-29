@@ -2,23 +2,36 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import {logIn, loginStatus, setUser} from '../actions'
+import ReactModal from 'react-modal'
 
+const formValidation = (user, pwd) => {
+	if (user === '' || pwd === '') {
+		return false
+	}	
+	else {
+		return true	
+	}
+}
 
 class Login extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			username: '',
-			password: ''
+			password: '',
+			showModal: false,
+			loginStatus: ''
 		}
 		this.login = this.login.bind(this)
 		this.signup = this.signup.bind(this)
 		this.userFieldChange = this.userFieldChange.bind(this)
 		this.passwordFieldChange = this.passwordFieldChange.bind(this)
+		this.handleCloseModal = this.handleCloseModal.bind(this)
 	}
 
 	componentDidMount () {
-		this.props.loginStatus('CLEAR')	
+		this.setState({loginStatus: ''})
+		//this.props.loginStatus('CLEAR')	
 	}
 
 	userFieldChange(evt) {
@@ -28,67 +41,101 @@ class Login extends Component {
 	passwordFieldChange(evt) {
 		this.setState({password: evt.target.value})
 	}
-
+	
+	handleCloseModal(evt) {
+		this.setState({showModal: false})
+	}
+	
 	signup(evt) {
-		axios.post('/api/signup', {
-			username: this.state.username,
-			password: this.state.password,
-		})
-		.then((res) => {
-			let response = res.data.response
-			console.log('response', response)
-			if(response === 'CREATE_USER') {
-				console.log('create user')
-				this.props.loginStatus(response)
-			}
-			else if(response === 'USER_EXIST') {
-				console.log('user exist')
-				this.props.loginStatus(response)
-			}
-			else if(response === 'WRONGFORMAT') {
-				console.log('wrong format')
-				this.props.loginStatus(response)	
-			}
-			else {
-				console.log('error')
-			}
-		})
+		let user = this.state.username
+		let pwd = this.state.password
+		if(!formValidation(user, pwd)) {
+			this.setState({
+				showModal: true, 
+				loginStatus: 'User or password format is wrong!! (Do not use space)'
+			})
+		}
+		else{
+			axios.post('/api/signup', {
+				username: user,
+				password: pwd
+			})
+			.then((res) => {
+				let response = res.data.response
+				console.log('response', response)
+				this.setState({showModal: true, loginStatus: response}) 
+			})
+		}
 	}
 
 	login(evt) {
-		axios.post('/api/login', {
-			username: this.state.username,
-			password: this.state.password
-		})	
-		.then((res) => {
-			let response = res.data.response
-			let token = res.data.token
-			console.log('response', response)
-			this.props.setUser(this.state.username)
-			this.props.login()
-				
-			if(response === 'SUCCESS') {
-				console.log('login')
-				document.cookie = `token=${token}`
-				this.props.setUser(this.state.username)
-				this.props.login()
-			}
-			else if(response === 'NO_USER') {
-				console.log('no user')
-				this.props.loginStatus(response)
-			}
-			else if(response === 'WRONGPASSWORD') {
-				console.log('wrong password')
-				this.props.loginStatus(response)
-			}
-			else {
-				console.log('error')
-			}
-		})
+		let user = this.state.username
+		let pwd = this.state.password
+		
+		if(!formValidation(user, pwd)) {
+			this.setState({
+				showModal: true, 
+				loginStatus: 'User or password format is wrong!! (Do not use space)'
+			})
+		}
+		else {
+			axios.post('/api/login', {
+				username: user,
+				password: pwd
+			})	
+			.then((res) => {
+				let response = res.data.response
+				let token = res.data.token
+					
+				if(response === 'SUCCESS') {
+					console.log('login')
+					document.cookie = `token=${token}`
+					this.props.setUser(this.state.username)
+					this.props.login()
+				}
+				else {
+					this.setState({showModal: true, loginStatus: response}) 
+				}
+			})
+		}
 	}
 
 	render() {
-		console.log(this.props)
+		const modal = () => {
+			let textColor;
+			if(this.state.loginStatus === 'Create successfully, please log in!!') {
+				textColor = 'green'
+			}
+			else {
+				textColor = 'red'
+			}
+			return (
+				<div>
+					<ReactModal 
+						isOpen={this.state.showModal}
+						contentLabel='Log in status'
+						style={{
+							overlay : {
+								backgroundColor: 'rgba(255, 255, 255, 0.6)' 
+							},
+							content : {
+								margin: 'auto',
+								width: '50%',
+								height: '80px',
+								border: '10px solid #6171a3',
+								borderRadius: '15px',
+								padding: '10px',
+								color: textColor
+							}
+						}}
+					>
+					<p className='label label-status'>{this.state.loginStatus}</p>
+					<button className='btn btn-login-cancel' onClick={this.handleCloseModal}>Close Modal</button>
+					</ReactModal>
+				</div>
+			)	
+		}
+		
 		return (
 			<div className='container-login'>
 				<label className='label label-login'>User Name</label>
@@ -100,18 +147,17 @@ class Login extends Component {
 				</div>
 				<button className='btn btn-login' onClick={this.login}>Log In</button> 
 				<button className='btn btn-login' onClick={this.signup}>Sign Up</button> 
+				{modal()}
 			</div>
 		)
 	}
 }
 
 const mapStateToProps = (state) => ({
-	loginState: state.loginStatus	
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	login: () => dispatch(logIn()),
-	loginStatus: (data) => dispatch(loginStatus(data)),
 	setUser: (data) => dispatch(setUser(data))
 })
 

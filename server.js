@@ -136,11 +136,11 @@ app.post('/api/signup', function(req, res) {
 	}
 */
 	if (userDict.has(user)) {
-		response = 'USER_EXIST'
+		response = 'The user exist!!'
 	}
 	else {
 		userDict.set(user, password)
-		response = 'CREATE_USER'
+		response = 'Create successfully, please log in!!'
 	}
 	console.log(userDict.getAll())
 	res.json({response})
@@ -159,11 +159,11 @@ app.post('/api/login', function(req, res) {
 			return 
 		}
 		else {
-			response = 'WRONGPASSWORD'
+			response = 'Password is wrong!!'
 		}
 	}
 	else {
-		response = 'NO_USER'
+		response = 'Not found user!!'
 	}
 	res.json({response})	
 })
