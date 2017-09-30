@@ -12,17 +12,17 @@ import {
 const RootRoute = ({auth}) => (
 	<Route exact path='/' render={(props) => (
 		<Redirect to={{
-			pathname: auth ? '/content' : '/login',
+			pathname: auth ? '/api/content' : '/api/login',
 			state: {from: props.location}
 		}} />
 	)} />
 )
 
 const LoginRoute = ({auth}) => (
-	<Route path='/login' render={(props) => (
+	<Route path='/api/login' render={(props) => (
 		auth ? (
 			<Redirect to={{
-				pathname: '/content',
+				pathname: '/api/content',
 				state: {from: props.location}
 			}} />
 		) : (
@@ -32,12 +32,12 @@ const LoginRoute = ({auth}) => (
 )
 
 const ContentRoute = ({auth}) => (
-	<Route path='/content' render={(props) => {
+	<Route path='/api/content' render={(props) => {
 		return auth ? (
 			<Content />
 		) : (
 			<Redirect to={{
-				pathname: '/login',
+				pathname: '/api/login',
 				state: {from: props.location}
 			}} />
 		)
