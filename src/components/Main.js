@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {Component} from 'react'
 import Login from './Login'
 import Content from './Content'
 import {connect} from 'react-redux'
+import {setUser, logIn} from '../actions'
 import {
 	BrowserRouter as Router,
 	Route,
@@ -43,19 +44,40 @@ const ContentRoute = ({auth}) => (
 	}} />
 )
 
-const Main = ({auth}) => (
-		<Router>
-			<div>
-				<RootRoute auth={auth} />
-				<LoginRoute auth={auth} />
-				<ContentRoute auth={auth} />
-			</div>
-		</Router>
-)
+class Main extends Component {
+	
+	componentDidMount() {
+		const {auth, user, setUser, login} = this.props
+		if (localStorage.getItem('SCP-auth') === 'authenticated') {
+			setUser(localStorage.getItem('SCP-user'))
+			login()
+		}
+	}
+	
+	render() {
+		return (
+			
+			<Router>
+				<div>
+					<RootRoute auth={this.props.auth} />
+					<LoginRoute auth={this.props.auth} />
+					<ContentRoute auth={this.props.auth} />
+				</div>
+			</Router>
+		)
+	}
+}
+
 
 
 const mapStateToProps = (state) => ({
-	auth: state.auth	
+	auth: state.auth,
+	user: state.user
 })
 
-export default connect(mapStateToProps)(Main)
+const mapDispatchToProps = (dispatch) => ({
+	login: () => dispatch(logIn()),
+	setUser: (data) => dispatch(setUser(data))	
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main)

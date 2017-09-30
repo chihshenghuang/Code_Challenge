@@ -83,7 +83,8 @@ class Login extends Component {
 			.then((res) => {
 				let token = res.data.token
 				if(res.data.response === 'SUCCESS') {
-					document.cookie = `token=${token}`
+					localStorage.setItem('SCP-auth', 'authenticated')
+					localStorage.setItem('SCP-user', user)
 					this.props.setUser(this.state.username)
 					this.props.login()
 				}

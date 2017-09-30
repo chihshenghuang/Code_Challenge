@@ -38,9 +38,9 @@ body {
 .container-article {
 	display: flex;
 	justify-content: flex-start;
-	margin: 30px 200px;
+	margin: 30px auto;
 	padding: 10px;
-	width: 1000px;
+	width: 85%;
 	border: 1px solid white;
 	border-radius: 15px;
 }
@@ -104,7 +104,7 @@ body {
 .label-user {
 	display: inline-block;
 	color: white;
-	margin: 10px 60px;
+	margin: 10px 30px;
 	font-size: 58px;
 }
 .label-votes {
