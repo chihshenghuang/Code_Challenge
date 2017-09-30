@@ -40,19 +40,19 @@ body {
 	justify-content: flex-start;
 	margin: 30px 200px;
 	padding: 10px;
-	width: 800px;
+	width: 1000px;
 	border: 1px solid white;
 	border-radius: 15px;
 }
 
 .container-vote {
 	display: inline-block;
-	width: 70px;
+	width: 220px;
 }
 
 .container-topic {
 	display: inline-block;
-	margin-left: 40px;
+	margin-left: 20px;
 	display: flex;
 	align-items: center;
 }
@@ -90,6 +90,10 @@ body {
 	margin: auto;
 	width: 80%;
 	margin-top: 30px;
+}
+
+.label-btn-content {
+	float: right	
 }
 
 .label-login {
@@ -130,6 +134,11 @@ body {
 .btn {
     display: inline-block;
     cursor: pointer;
+}
+
+.btn-content {
+	display:flex;
+	align-items: center;
 }
 
 .btn-login-cancel {
@@ -217,4 +226,7 @@ body {
 
 }
 
+.img-btn-content {
+	margin: 0px 25px;
+}
  

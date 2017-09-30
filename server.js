@@ -5,108 +5,26 @@ const jwt = require('jsonwebtoken')
 const path = require('path')
 const app = express()
 
-
-const content = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Integer pretium dui sit amet felis. Integer sit amet diam. Phasellus ultrices viverra velit. Nam mattis, arcu ut bibendum commodo, magna nisi tincidunt tortor, quis accumsan augue ipsum id lorem.Lo'
-var topics = [
-	{
-		id: 1,
-		content: content,
-		votes: 1
-	},
-	{
-		id: 2,
-		content: content,
-		votes: 2
-	},
-	{
-		id: 3,
-		content: content,
-		votes: 3
-	},
-	{
-		id: 4,
-		content: content,
-		votes: 4
-	},
-	{
-		id: 5,
-		content: content,
-		votes: 5
-	}
-]
-
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'build')))
-	
-const verify = (token, user) => {
-	jwt.verify(token, 'RS256', function(err, decoded) {
-		if(err)	{
-			console.log('no auth')
-			return res.status(403).send({
-				response: 'NO_AUTHENTICATION'	
-			})	
-		}	  
-		else {
-			console.log('sucess')
-			//req.decoded = decoded
-		}
-	})
-}
 
-app.get('/', function (req, res) {
-  res.send('Hello World!')
-})
+const DATALENGTH = 5
+const port = process.env.PORT || 8080
+const content = `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
+				Integer pretium dui sit amet felis. Integer sit amet diam. 
+				Phasellus ultrices viverra velit. Nam mattis, arcu ut bibendum 
+				commodo, magna nisi tincidunt tortor, quis accumsan augue ipsum id lorem.Lo`
 
-app.get('/api/topics', function(req, res) {
-	//verify(req.cookies.token, req.body.username)
-	topics.sort((a, b) => {
-		return b.votes - a.votes	
-	})
-	console.log(topics)
-	res.json(topics)
-})
-
-app.put('/api/topics', function(req, res) {
-	//verify(req.cookies.token, req.body.username)
-	var articleVotesAry = req.body.articleVotesArray.array
-	topics.sort((a, b) => {
-		return a.id - b.id
-	})
-	articleVotesAry.shift()
-	for(let i=1; i < topics.length; i++ ) {
-		topics[i].votes = articleVotesAry[i]	
-	}
-	topics.sort((a, b) => {
-		return b.votes - a.votes	
-	})
-	console.log(topics)
-	res.json(topics)
-})
-
-app.post('/api/topics', function(req, res) {
-	//verify(req.cookies.token, req.body.username)
-	var articleVotesAry = req.body.articleVotesArray.array
-	topics.sort((a, b) => {
-		return a.id - b.id
-	})
-	articleVotesAry.shift()
-	for(let i=1; i < topics.length; i++ ) {
-		topics[i].votes = articleVotesAry[i]	
-	}
+var topics = [];
+for(let i = 1; i <= DATALENGTH; i++) {
 	topics.push({
-		id: topics.length+1,
-		content: req.body.topic,
-		votes: 0
-	})
-	console.log(req.body.articleVotesArray)
-	topics.sort((a, b) => {
-		return b.votes - a.votes	
-	})
-	console.log(topics)
-	res.json(topics)
-})
-
+		id: i,
+		content: content,
+		votes: i
+	})	
+}
+	
 function userDictionary() {
 	let users = {}
 	this.set = (key, value) => {
@@ -124,17 +42,52 @@ function userDictionary() {
 }
 
 const userDict = new userDictionary()
+const updateVotes = (votesAry) => {
+	topics.sort((a, b) => {
+		return a.id - b.id	
+	})
+	votesAry.shift()
+	for(let i = 0; i < topics.length; i++) {
+		topics[i].votes = votesAry[i]	
+	}
+}
+
+app.get('/', function (req, res) {
+  res.send('Hello World!')
+})
+
+app.get('/api/topics', function(req, res) {
+	topics.sort((a, b) => {
+		return b.votes - a.votes	
+	})
+	res.json(topics)
+})
+
+app.put('/api/topics', function(req, res) {
+	updateVotes(req.body.articleVotesArray.array)
+	topics.sort((a, b) => {
+		return b.votes - a.votes	
+	})	
+	res.json(topics)
+})
+
+app.post('/api/topics', function(req, res) {
+	updateVotes(req.body.articleVotesArray.array)
+	topics.push({
+		id: topics.length+1,
+		content: req.body.topic,
+		votes: 0
+	})
+	topics.sort((a, b) => {
+		return b.votes - a.votes	
+	})
+	res.json(topics)
+})
 
 app.post('/api/signup', function(req, res) {
 	let user = req.body.username
 	let password = req.body.password
 	let response
-/*
-	if (user.indexOf(' ') || password.indexOf(' ')) {
-		response = 'WRONGFORMAT'
-		res.json({response})
-	}
-*/
 	if (userDict.has(user)) {
 		response = 'The user exist!!'
 	}
@@ -168,7 +121,6 @@ app.post('/api/login', function(req, res) {
 	res.json({response})	
 })
 
-const port = process.env.PORT || 8080
 app.listen(port, function () {
   console.log(`Example app listening on port ${port}!`)
 })

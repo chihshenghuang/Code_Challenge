@@ -29,9 +29,8 @@ class Login extends Component {
 		this.handleCloseModal = this.handleCloseModal.bind(this)
 	}
 
-	componentDidMount () {
+	componentDidMount() {
 		this.setState({loginStatus: ''})
-		//this.props.loginStatus('CLEAR')	
 	}
 
 	userFieldChange(evt) {
@@ -45,7 +44,7 @@ class Login extends Component {
 	handleCloseModal(evt) {
 		this.setState({showModal: false})
 	}
-	
+
 	signup(evt) {
 		let user = this.state.username
 		let pwd = this.state.password
@@ -61,9 +60,7 @@ class Login extends Component {
 				password: pwd
 			})
 			.then((res) => {
-				let response = res.data.response
-				console.log('response', response)
-				this.setState({showModal: true, loginStatus: response}) 
+				this.setState({showModal: true, loginStatus: res.data.response}) 
 			})
 		}
 	}
@@ -84,17 +81,14 @@ class Login extends Component {
 				password: pwd
 			})	
 			.then((res) => {
-				let response = res.data.response
 				let token = res.data.token
-					
-				if(response === 'SUCCESS') {
-					console.log('login')
+				if(res.data.response === 'SUCCESS') {
 					document.cookie = `token=${token}`
 					this.props.setUser(this.state.username)
 					this.props.login()
 				}
 				else {
-					this.setState({showModal: true, loginStatus: response}) 
+					this.setState({showModal: true, loginStatus: res.data.response}) 
 				}
 			})
 		}
@@ -124,7 +118,9 @@ class Login extends Component {
 								height: '80px',
 								border: '10px solid #6171a3',
 								borderRadius: '15px',
+								fontSize: '18px',
 								padding: '10px',
+								textAlign: 'center',
 								color: textColor
 							}
 						}}

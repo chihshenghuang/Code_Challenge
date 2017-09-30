@@ -4,6 +4,9 @@ import {connect} from 'react-redux'
 import Article from './Article'
 import axios from 'axios'
 import ReactModal from 'react-modal'
+import refreshLogo from '../images/refresh.png'
+import postLogo from '../images/post.png'
+import logoutLogo from '../images/logout.png'
 
 const TEXTAREA_MAXLENGTH = 255
 
@@ -22,6 +25,7 @@ class Content extends Component {
 			postedArticles: []
 		}
 		this.logout = this.logout.bind(this)
+		this.refresh= this.refresh.bind(this)
 		this.postArticle = this.postArticle.bind(this)
 		this.submitPost = this.submitPost.bind(this)
 		this.cancelPost = this.cancelPost.bind(this)
@@ -45,6 +49,18 @@ class Content extends Component {
 		this.setState({postedArticles: topics}, this.props.updateVote(0, 0))	
 	}
 
+	refresh() {
+		const {dispatch} = this.props
+		axios.put('/api/topics', {
+			topic: this.state.topic,
+			articleVotesArray: this.props.articles
+		}).then((response) => {
+			dispatch(fetchTopics(response.data))
+		}).catch((error) => {
+			console.log(error)	
+		})
+	}
+
 	logout() {
 		axios.put('/api/topics', {
 			topic: this.state.topic,
@@ -61,7 +77,7 @@ class Content extends Component {
 	}
 
 	submitPost() {
-		this.setState({postState: false})
+		this.setState({postState: false}, this.props.updateVote(this.state.postedArticles.length+1, 0))
 		const {dispatch} = this.props
 		axios.post('/api/topics', {
 			topic: this.state.topic,
@@ -117,8 +133,24 @@ class Content extends Component {
 		}
 		return (
 			<div className='container'>
-				<button className='btn btn-login' onClick={this.logout}>Log Out</button>
-				<button className='btn btn-login' onClick={this.postArticle}>Post Article</button>
+				<button className='btn btn-login' onClick={this.logout}>
+					<div className='btn-content'>
+						<img className='img-btn-content' src={logoutLogo} />
+						<span className='label-btn-content'>Log Out</span>
+					</div>
+				</button>
+				<button className='btn btn-login' onClick={this.postArticle}>
+					<div className='btn-content'>
+						<img className='img-btn-content' src={postLogo} />
+						<span className='label-btn-content'>Post Article</span>
+					</div>
+				</button>
+				<button className='btn btn-login' onClick={this.refresh}>
+					<div className='btn-content'>
+						<img className='img-btn-content' src={refreshLogo} />
+						<span>Refresh Article</span>
+					</div>
+				</button>
 				<div className='label-user'>Hi, {this.props.user}</div>
 				{postTextarea()}	
 				{getTopics()}	
