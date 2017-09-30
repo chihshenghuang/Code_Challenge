@@ -7,9 +7,9 @@ import ReactModal from 'react-modal'
 import refreshLogo from '../images/refresh.png'
 import postLogo from '../images/post.png'
 import logoutLogo from '../images/logout.png'
+import userLogo from '../images/user.png'
 
 const TEXTAREA_MAXLENGTH = 255
-
 const article = (id, content, votes) => {
 	return <Article index={id} topic={content} votes={votes}/>
 }
@@ -151,7 +151,10 @@ class Content extends Component {
 						<span>Refresh Article</span>
 					</div>
 				</button>
-				<div className='label-user'>Hi, {this.props.user}</div>
+				<div className='container-userInfo'>
+						<img src={userLogo} / >
+						<span className='label-user'>Hi, {this.props.user}</span>
+				</div>
 				{postTextarea()}	
 				{getTopics()}	
 			</div>

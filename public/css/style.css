@@ -62,10 +62,11 @@ body {
 	padding: 20px;
 }
 
-.container-usrInfo {
+.container-userInfo {
+	display: inline-block;
 	margin: 20px;
+	float: right;
 }
-
 
 .textarea {
 	display: block;
@@ -102,10 +103,9 @@ body {
 
 .label-user {
 	display: inline-block;
-	margin-left: 30px;
-	height: 56px;
 	color: white;
-	font-size: 34px;
+	margin: 10px 60px;
+	font-size: 58px;
 }
 .label-votes {
 	color: white;
@@ -229,4 +229,8 @@ body {
 .img-btn-content {
 	margin: 0px 25px;
 }
- 
+
+.userInfo {
+	display:flex;
+	align-items: center;
+}
