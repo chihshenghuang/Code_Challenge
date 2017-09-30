@@ -10,19 +10,19 @@ import {
 } from 'react-router-dom'
 
 const RootRoute = ({auth}) => (
-	<Route exact path='/' render={(props) => (
+	<Route exact path={`${process.env.PUBLIC_URL}/`} render={(props) => (
 		<Redirect to={{
-			pathname: auth ? '/api/content' : '/api/login',
+			pathname: auth ? '/content' : '/login',
 			state: {from: props.location}
 		}} />
 	)} />
 )
 
 const LoginRoute = ({auth}) => (
-	<Route path='/api/login' render={(props) => (
+	<Route path={`${process.env.PUBLIC_URL}/login`} render={(props) => (
 		auth ? (
 			<Redirect to={{
-				pathname: '/api/content',
+				pathname: '/content',
 				state: {from: props.location}
 			}} />
 		) : (
@@ -32,12 +32,12 @@ const LoginRoute = ({auth}) => (
 )
 
 const ContentRoute = ({auth}) => (
-	<Route path='/api/content' render={(props) => {
+	<Route path={`${process.env.PUBLIC_URL}/content`} render={(props) => {
 		return auth ? (
 			<Content />
 		) : (
 			<Redirect to={{
-				pathname: '/api/login',
+				pathname: '/login',
 				state: {from: props.location}
 			}} />
 		)
