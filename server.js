@@ -4,15 +4,12 @@ const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
 const path = require('path')
 const app = express()
-const fallback = require('express-history-api-fallback')
-
 
 app.use(bodyParser.json())
 app.use(cookieParser())
 
-const root = `${__dirname}/build`
+const root = __dirname + '/build'
 app.use(express.static(root))
-app.use(fallback('index.html', {root}))
 
 const DATALENGTH = 20
 const port = process.env.PORT || 8080
@@ -62,7 +59,8 @@ app.get('/', function(req, res) {
 })
 
 app.get('/api/topics', function(req, res) {
-    topics.sort((a, b) => {
+    console.log('get', topics)
+	topics.sort((a, b) => {
         return b.votes - a.votes
     })
     res.json(topics)
@@ -122,6 +120,11 @@ app.post('/api/login', function(req, res) {
     }
     res.json({ response })
 })
+
+app.get('*', function(req, res){
+	res.sendFile(path.resolve(__dirname, 'build', 'index.html'))	
+})
+
 
 app.listen(port, function() {
     console.log(`Example app listening on port ${port}!`)
