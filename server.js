@@ -4,12 +4,17 @@ const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
 const path = require('path')
 const app = express()
+const fallback = require('express-history-api-fallback')
+
 
 app.use(bodyParser.json())
 app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'build')))
 
-const DATALENGTH = 5
+const root = `${__dirname}/build`
+app.use(express.static(root))
+app.use(fallback('index.html', {root}))
+
+const DATALENGTH = 20
 const port = process.env.PORT || 8080
 const content = `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
 				Integer pretium dui sit amet felis. Integer sit amet diam. 
