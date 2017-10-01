@@ -10,6 +10,5 @@ export default (state = initialState, action) => {
         default:
             return state
     }
-	console.log(state.array)
     return state
 }
