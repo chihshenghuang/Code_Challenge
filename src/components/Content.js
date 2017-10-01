@@ -25,7 +25,8 @@ class Content extends Component {
             postState: false,
             topic: '',
             submitPost: false,
-            postedArticles: []
+            postedArticles: [],
+			indexArr: []
         }
         this.logout = this.logout.bind(this)
         this.refresh = this.refresh.bind(this)
@@ -48,14 +49,22 @@ class Content extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { topics } = nextProps
-        this.setState({ postedArticles: topics }, this.props.updateVote(0, 0))
+        const { updateVote, topics } = nextProps
+		console.log('topics', topics)
+		let indexArr = []
+		for(let i = 0; i < topics.length; i++) {
+			indexArr[i] = topics[i].id	
+			updateVote(i, topics[i].votes)
+		}
+		console.log('index', indexArr)
+        this.setState({ postedArticles: topics, indexArr: indexArr }) 
     }
 
     refresh() {
         const { dispatch } = this.props
-        axios.put('/api/topics', {
+		axios.put('/api/topics', {
             topic: this.state.topic,
+			indexArr: this.state.indexArr,	
             articleVotesArray: this.props.articles
         }).then((response) => {
             dispatch(fetchTopics(response.data))
@@ -67,6 +76,7 @@ class Content extends Component {
     logout() {
         axios.put('/api/topics', {
             topic: this.state.topic,
+			indexArr: this.state.indexArr,	
             articleVotesArray: this.props.articles
         }).then((response) => {
             localStorage.setItem('SCP-auth', '')
@@ -81,10 +91,11 @@ class Content extends Component {
     }
 
     submitPost() {
-        this.setState({ postState: false }, this.props.updateVote(this.state.postedArticles.length + 1, 0))
+        this.setState({ postState: false }) //this.props.updateVote(this.state.postedArticles.length + 1, 0))
         const { dispatch } = this.props
         axios.post('/api/topics', {
                 topic: this.state.topic,
+				indexArr: this.state.indexArr,	
                 articleVotesArray: this.props.articles
             })
             .then((response) => {
@@ -108,10 +119,11 @@ class Content extends Component {
         const getTopics = () => {
             var topicsArr = [];
             for (let i = 0; i < this.state.postedArticles.length; i++) {
-                topicsArr.push(article(this.state.postedArticles[i].id,
+                topicsArr.push(article(i,
                     this.state.postedArticles[i].content,
                     this.state.postedArticles[i].votes))
             }
+
             return (
                 topicsArr.map((item, index) => < div key = { index } > { item } < /div>))
             }
@@ -128,7 +140,7 @@ class Content extends Component {
                         <
                         textarea className = 'textarea'
                         onChange = { this.textareaChange }
-                        maxLength = { TEXTAREA_MAXLENGTH } > < /textarea> <
+                        maxLength = { TEXTAREA_MAXLENGTH }> < /textarea> <
                         button className = 'btn btn-cancel'
                         onClick = { this.cancelPost } > Cancel < /button> <
                         button className = 'btn btn-post'
