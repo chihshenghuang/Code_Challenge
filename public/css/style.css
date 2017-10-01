@@ -47,12 +47,12 @@ body {
 
 .container-vote {
 	display: inline-block;
-	width: 220px;
+	width: 40px;
 }
 
 .container-topic {
 	display: inline-block;
-	margin-left: 20px;
+	margin-left: 80px;
 	display: flex;
 	align-items: center;
 }
