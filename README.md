@@ -14,7 +14,7 @@ This application including the following tools
 * Express
 * Mocha
 
-###Installation
+## Installation
 
 ```javascript
 git clone https://github.com/pedoe/Code_Challenge.git
@@ -23,11 +23,11 @@ node server.js
 ```
 Then open [http://localhost:8080/](http://localhost:8080/) to see the application
 
-###Deploy to Heroku
+## Deploy to Heroku
 
 Demo [https://powerful-mountain-27404.herokuapp.com/](https://powerful-mountain-27404.herokuapp.com/)
 
-###Test & Build
+## Test & Build
 
 ```javascript
 node test.js
